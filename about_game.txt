@@ -1,0 +1,9 @@
+This is a word game.
+The idea is inspired from a past(?) TV show.
+Players request for a combination of consonants and vowels, which are given at random;
+they then have to make top scoring words from the given combination
+
+How to play
+Player requests a random combination of vowels and consonants.
+When given they have 10 seconds to make the most words they can from the combination given.
+Their final points at the end of the game are a sum of the points of the individual words they've come up with.

@@ -11,6 +11,7 @@ Final product:
 More details... see About_Game file
 """
 from word_generator import *
+from datetime import datetime
 """
 Algo-1:
 1 - Store a word (random_string).
@@ -56,6 +57,8 @@ def get_accuracy(word, random_string):
         if(letter in random_string):
             letters_present = letters_present + 1
             accuracy = (letters_present/random_string_length)*100
+        else:
+            accuracy = 0 #included letters not presented
     return accuracy
 
 def grade(accuracy):
@@ -64,7 +67,9 @@ def grade(accuracy):
     Function to grant user points based on their accuracy
     """
     accuracy = int(accuracy)
-    if(accuracy in range(0, 30)): # 0 - 29
+    if(accuracy == 0):
+        points = 0
+    elif(accuracy in range(1, 30)): # 0 - 29
         points = 2
     elif(accuracy == 30):
         points = 3
@@ -185,31 +190,49 @@ def word_with_max_points(possible_words):
             best = key
     return best
 
-# ====================================== WORD GAME ===================================================================
+# ============================================= WORD GAME =================================================================
 
 #user combination
 separator = "============================================================================================================="
 print(separator)
 print("This is a word game. \nThe idea is inspired from a past(?) TV show. \nPlayers request for a combination of consonants and vowels, which are given at random.\nThey then have to make top scoring words from the given combination")
+print("\nHow To Play: Request a random combination of vowels and consonants \nWith c = consonant and v = vowel ")
 print(separator)
 
-combination = input("\nReqest a random combination of vowels and consonants \nWith c = consonant and v = vowel (e.g. ccvc) : ")
+combination = input("\nEnter a combination (e.g. ccvc) : ")
 combination = sterilise_input(combination)
 
 #generate random string and print
 random_string = generate_word(combination)
 print(random_string.upper())
 
-#user guesses
-user_word = input("\nEnter your guess: ") #user guess
-user_word = sterilise_input(user_word)
+#Permit user to enter multiple words whose points will be added to award their final points
+ten_seconds_ahead = datetime(datetime.now().year, datetime.now().month, datetime.now().day, datetime.now().hour, datetime.now().minute, datetime.now().second + 20, 999999)
+total_points = 0
+accuracy = 0
 
-#get accuracy, verify and grade
-accuracy = get_accuracy(user_word, random_string)
-points = award_points(user_word, accuracy) #grade
-print("Points = "+str(points))
+while (ten_seconds_ahead - datetime.now()).seconds <= 20:
 
-#Finding the word that would the maximum number of Points
+    #print time
+    print(str((ten_seconds_ahead - datetime.now()).seconds)+" seconds left")
+
+    #user guesses
+    user_word = input("\nEnter your guess: ") #user guess
+    user_word = sterilise_input(user_word)
+
+    #get accuracy, verify and grade
+    accuracy = get_accuracy(user_word, random_string)
+    points = award_points(user_word, accuracy) #grade
+    print("Points = "+str(points))
+
+    #sum points of individual words
+    total_points = total_points + points
+
+
+
+#---- Maximum Points----
+
+#Finding the word that would yield the maximum number of Points
 all_subwords = sub_words(random_string)
 best_word = word_with_max_points(all_subwords)
 
@@ -218,7 +241,10 @@ best_accuracy = get_accuracy(best_word, random_string)
 best_points = award_points(best_word, best_accuracy)
 
 if accuracy == best_accuracy:
-    print("Excellent !!!")
+    print("Excellent !!! - You had a word with highest points!")
+
+#--- At the end of the game
+print("\nYou made "+ str(total_points)+" points !!")
 
 print("\nBest Word")
 print(best_word.upper()+" --with-- "+ str(best_points)+" Points")
