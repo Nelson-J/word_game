@@ -11,7 +11,7 @@ Final product:
 More details... see About_Game file
 """
 from word_generator import *
-from datetime import datetime
+from time import time
 """
 Algo-1:
 1 - Store a word (random_string).
@@ -207,15 +207,15 @@ random_string = generate_word(combination)
 print(random_string.upper())
 
 #Permit user to enter multiple words whose points will be added to award their final points
-twenty_five_seconds_ahead = datetime(datetime.now().year, datetime.now().month, datetime.now().day, datetime.now().hour, datetime.now().minute, datetime.now().second + 25, 999999)
+twenty_five_seconds_ahead = time() + 25
 total_points = 0
 accuracy = 0
 
 # 25 seconds game time
-while (ten_seconds_ahead - datetime.now()).seconds <= 25:
+while (twenty_five_seconds_ahead-time()) > 0:
 
     #print time
-    print(str((ten_seconds_ahead - datetime.now()).seconds)+" seconds left")
+    print(str(int(twenty_five_seconds_ahead - time()))+" seconds left")
 
     #user guesses
     user_word = input("\nEnter your guess: ") #user guess
