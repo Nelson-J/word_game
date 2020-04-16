@@ -211,7 +211,8 @@ ten_seconds_ahead = datetime(datetime.now().year, datetime.now().month, datetime
 total_points = 0
 accuracy = 0
 
-while (ten_seconds_ahead - datetime.now()).seconds <= 20:
+# 25 seconds game time
+while (ten_seconds_ahead - datetime.now()).seconds <= 25:
 
     #print time
     print(str((ten_seconds_ahead - datetime.now()).seconds)+" seconds left")
