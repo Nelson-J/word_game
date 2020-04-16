@@ -162,6 +162,7 @@ def word_exists(word):
     """
     #verify word existence from loaded dictionary
     if(word in dictionary_word_list):
+        dictionary_word_list.remove(word) #ensures that same word isn't entered multiple times
         return True
     return False
 
