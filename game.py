@@ -207,7 +207,7 @@ random_string = generate_word(combination)
 print(random_string.upper())
 
 #Permit user to enter multiple words whose points will be added to award their final points
-ten_seconds_ahead = datetime(datetime.now().year, datetime.now().month, datetime.now().day, datetime.now().hour, datetime.now().minute, datetime.now().second + 20, 999999)
+twenty_five_seconds_ahead = datetime(datetime.now().year, datetime.now().month, datetime.now().day, datetime.now().hour, datetime.now().minute, datetime.now().second + 25, 999999)
 total_points = 0
 accuracy = 0
 
