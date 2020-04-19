@@ -25,6 +25,26 @@ Algo-1:
 file = open("dictionary.txt", "r")
 dictionary = file.read()
 
+def sterilise_input(user_input):
+    """
+    Fuction cleanses user input
+    """
+    #lowercase
+    user_input = user_input.lower()
+    user_input = user_input.strip() # remove whitespaces
+
+    #ensure that input is letter
+    for letter in user_input:
+        if letter.isalpha() == False:
+            print("Unknown character detected, Please Try Again")
+            exit()
+
+    if(user_input == ""):
+        print("Try Again")
+        exit()
+
+    return user_input #handle input
+
 def dictionary_string_to_list(dictionary):
     """
     Function converts dictionary string into a list of dictionary words
@@ -40,9 +60,20 @@ def dictionary_string_to_list(dictionary):
             word_list.append(word)
             word = ""
 
-    return word_list
+    return word_list #convert the string of dictionary words to a scannable list
 
 dictionary_word_list = dictionary_string_to_list(dictionary)
+
+def word_exists(word):
+    """
+    Function verifies that the word exists in a dictionary (loaded from a file).
+    return True or False
+    """
+    #verify word existence from loaded dictionary
+    if(word in dictionary_word_list):
+        dictionary_word_list.remove(word) #ensures that same word isn't entered multiple times
+        return True
+    return False
 
 def get_accuracy(word, random_string):
     """
@@ -98,25 +129,8 @@ def award_points(word, accuracy):
         return grade(accuracy)
     return 0
 
-def sterilise_input(user_input):
-    """
-    Fuction cleanses user input
-    """
-    #lowercase
-    user_input = user_input.lower()
-    user_input = user_input.strip() # remove whitespaces
 
-    #ensure that input is letter
-    for letter in user_input:
-        if letter.isalpha() == False:
-            print("Unknown character detected, Please Try Again")
-            exit()
-
-    if(user_input == ""):
-        print("Try Again")
-        exit()
-
-    return user_input
+# ======================== Handling how user could get optimal points ==========================================
 
 def sub_words(random_string): #print all possible words that can be formed from string of characters
     """
@@ -155,16 +169,13 @@ def sub_words(random_string): #print all possible words that can be formed from 
         #sub_word_list.append(word)
     return sub_word_list
 
-def word_exists(word):
+def grade_word_list(word_list):
     """
-    Function verifies that the word exists in a dictionary (loaded from a file).
-    return True or False
+    Function gets a word list with accuracies and transforms these accuracies to points
     """
-    #verify word existence from loaded dictionary
-    if(word in dictionary_word_list):
-        dictionary_word_list.remove(word) #ensures that same word isn't entered multiple times
-        return True
-    return False
+    for key, value in word_list.items():
+        value = grade(value)
+    return word_list # identify the points that go for the sub_words' accuracies
 
 def possible_best_words(possible_words):
     """
@@ -179,6 +190,24 @@ def possible_best_words(possible_words):
             best[key] = value
     return best
 
+def words_distribution (word_list):
+    """
+    Function gives the point distribution of words, in word_list
+    i.e. given a list of words, it returns how many words have each point available,
+    where the word_list is a dictionary of words and their corresponding point value
+    """
+
+    points_distribution = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0}
+    point = 1
+    frequency = 0
+    for value in word_list.values():
+        #for each point
+        for key_point, value_point in points_distribution.items():
+            #get the corresponding point and increase its frequency
+            if value == key_point:
+                value_point = value_point+1
+    return points_distribution
+
 def word_with_max_points(possible_words):
     """
     Function returns the word that would have yielded the highest points
@@ -190,6 +219,8 @@ def word_with_max_points(possible_words):
             max = value
             best = key
     return best
+
+
 
 # ============================================= WORD GAME =================================================================
 
