@@ -79,6 +79,7 @@ def get_accuracy(word, random_string):
     """
     Function to Calculate how accurate the Player response is,
     based on the number of letters used from the generated string of characters
+    If the player includes a letter which isn't in the string, accuracy given is 0
     - used in grading
     """
     letters_present = 0
@@ -132,7 +133,7 @@ def award_points(word, accuracy):
 
 # ======================== Handling how user could get optimal points ==========================================
 
-def sub_words(random_string): #print all possible words that can be formed from string of characters
+def sub_words(random_string): #return all possible words that can be formed from string of characters
     """
     Function finds dictionary words that can be formed by letters in the random generated string
     """
