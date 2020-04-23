@@ -90,7 +90,7 @@ def get_accuracy(word, random_string):
             letters_present = letters_present + 1
             accuracy = (letters_present/random_string_length)*100
         else:
-            accuracy = 0 #included letters not presented
+            return 0
     return accuracy
 
 def grade(accuracy):
