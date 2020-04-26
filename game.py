@@ -175,7 +175,7 @@ def grade_word_list(word_list):
     Function gets a word list with accuracies and transforms these accuracies to points
     """
     for key, value in word_list.items():
-        value = grade(value)
+        word_list[key] = grade(value)
     return word_list # identify the points that go for the sub_words' accuracies
 
 def possible_best_words(possible_words):
@@ -191,14 +191,14 @@ def possible_best_words(possible_words):
             best[key] = value
     return best
 
-def words_distribution (word_list):
+def point_distribution (word_list):
     """
     Function gives the point distribution of words, in word_list
     i.e. given a list of words, it returns how many words have each point available,
     where the word_list is a dictionary of words and their corresponding point value
     """
 
-    points_distribution = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0}
+    points_distribution = {2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0}
     point = 1
     frequency = 0
     for value in word_list.values():
@@ -207,7 +207,23 @@ def words_distribution (word_list):
             #get the corresponding point and increase its frequency
             if value == key_point:
                 value_point = value_point+1
+                points_distribution[key_point] = value_point
+
+    #do not store a point that isn't present in the list-----------------------------------------------------
+
     return points_distribution
+
+def get_words_with_point(word_list, point):
+    """
+    Function returns words that have a given point value
+    - Takes a list of words with assigned point values
+    """
+    words = []
+
+    for key, value in word_list.items():
+        if int(value) == point:
+            words.append(key)
+    return words
 
 def word_with_max_points(possible_words):
     """
@@ -267,8 +283,8 @@ while (twenty_five_seconds_ahead-time()) > 0:
 #---- Maximum Points----
 
 #Finding the word that would yield the maximum number of Points
-all_subwords = sub_words(random_string)
-best_word = word_with_max_points(all_subwords)
+subwords_left = sub_words(random_string)
+best_word = word_with_max_points(subwords_left)
 
 #Get the number of points the best word would yield
 best_accuracy = get_accuracy(best_word, random_string)
