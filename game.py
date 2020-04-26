@@ -237,6 +237,18 @@ def word_with_max_points(possible_words):
             best = key
     return best
 
+def is_present(word, word_list):
+    """
+    Function verifies that word is present in given list
+
+    -Input: a word As String
+            a list or words As List or Dictionary
+    -Output: Boolean
+    """
+    if word in word_list:
+        return True
+    else:
+        return False
 
 
 # ============================================= WORD GAME =================================================================
@@ -255,6 +267,12 @@ combination = sterilise_input(combination)
 random_string = generate_word(combination)
 print(random_string.upper())
 
+#get all possible words that can be made from random_string
+all_subwords = sub_words(random_string)
+all_subwords_with_point_value = grade_word_list(all_subwords) #give each word the appropriate point
+
+players_guess = {}#keep track of  words that player has guessed right
+
 #Permit user to enter multiple words whose points will be added to award their final points
 twenty_five_seconds_ahead = time() + 25
 total_points = 0
@@ -270,9 +288,15 @@ while (twenty_five_seconds_ahead-time()) > 0:
     user_word = input("\nEnter your guess: ") #user guess
     user_word = sterilise_input(user_word)
 
-    #get accuracy, verify and grade
-    accuracy = get_accuracy(user_word, random_string)
-    points = award_points(user_word, accuracy) #grade
+    #word is verified by checking that it is present in the subword list
+    #present? the point is awarded
+    #Not present a 0 point is awarded
+    if is_present(user_word, all_subwords):
+        points = all_subwords.pop(user_word) #remove played guess to avoid giving points on second entry
+        players_guess[user_word] = points #keep record of played guess
+    else:
+        points = 0
+
     print("Points = "+str(points))
 
     #sum points of individual words
